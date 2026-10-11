@@ -1,0 +1,27 @@
+1. need to create admin login API = POST /api/v1/auth/admin/login
+2. change forget password location
+3. In signup page validation on name,email,password and confirm password
+   name should not contain space numbers only alphabets are allowed
+4. email validation = 
+   email should be verify text on text onclick an api will call and it will verify the email, is email already exist or not and if its not otp will generate and send it to the same email with 6 digit OTP.create a user in database.
+5. password = Password must be at least 8 characters.password one uppercase,one lowercase and one special case character display all the possibility requirement in red color after any requirement fills out red color turnedout to be green and in confirm password when the password matches it should indicate that is matched
+6. react-hook-form library
+7. improve login dashboard
+8. indicate all the required field to be filled by user if not get notified on the dashboard if a particular filed is not filled only that filled needs to get highlighted.
+9. In login filed if email is valid and password not only indicate the email is valid and the password is wrong same for password field.
+10. forget password- mail submit and verify otp user will verify by the otp not mail new password confirm password will save in the database in user will redirect to the login page
+11. Create a API for edit profile in the dashboard and a image for the user in your profile profile picture and background picture if user not upload a picture the first Alphabet of the user will show. api will hit and store the data in db
+12. manage user = add user full form name password address email role add user API click on the user and edit delete and status add button and add isactive key
+13. manage course = as it is for manage user curd operation with UI
+
+
+today__________
+1.verify otp from mail filickers when otp is sent
+validation during form filling should be in red
+notification pop up after creating user creation signup
+react-otp
+password show option and hide in login or signup 
+remove administration admin login from login only a api will create 
+add new feature of resend otp 
+
+
