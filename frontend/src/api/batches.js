@@ -67,6 +67,14 @@ export async function getMyBatches() {
   return data;
 }
 
+export async function askBatchQuestion(batchId, question, history = []) {
+  const { data } = await client.post(`/batches/${batchId}/assistant`, {
+    question,
+    history,
+  });
+  return data;
+}
+
 export async function getBatchmates(batchId) {
   const { data } = await client.get(`/batches/${batchId}/batchmates`);
   return data;

@@ -466,6 +466,33 @@ const getMyBatches = async (studentId) => {
   return withCounts;
 };
 
+const getStudentBatchQuestionContext = async (batchId, studentId) => {
+  const isMember = await BatchStudent.exists({ batch: batchId, student: studentId });
+  if (!isMember) throw new Error("Batch not found");
+
+  const batch = await Batch.findOne({
+    _id: batchId,
+    isDeleted: { $ne: true },
+  })
+    .populate("course", "title description category level curriculum")
+    .lean();
+
+  if (!batch) throw new Error("Batch not found");
+
+  const course = batch.course || {};
+  return {
+    batchName: batch.batchName,
+    courseTitle: course.title || "Course",
+    courseDescription: String(course.description || "").slice(0, 3000),
+    category: course.category,
+    level: course.level,
+    curriculum: (course.curriculum || [])
+      .map((item) => String(item.title || "").slice(0, 160))
+      .filter(Boolean)
+      .slice(0, 40),
+  };
+};
+
 const getBatchmates = async (studentId, batchId) => {
   const batch = await Batch.findOne({
     _id: batchId,
@@ -664,6 +691,7 @@ module.exports = {
   addStudentToBatch,
   removeStudentFromBatch,
   getMyBatches,
+  getStudentBatchQuestionContext,
   getBatchmates,
   getTrainerBatches,
   getTrainerBatchStudents,

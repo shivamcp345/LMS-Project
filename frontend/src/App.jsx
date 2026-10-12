@@ -8,6 +8,7 @@ import Courses from "./pages/Courses";
 import CourseDetails from "./pages/CourseDetails";
 import Profile from "./pages/Profile";
 import MyBatch from "./pages/MyBatch";
+import BatchLessons from "./pages/BatchLessons";
 import BatchTests from "./pages/BatchTests";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminCourses from "./pages/AdminCourses";
@@ -44,6 +45,8 @@ export default function App() {
         <Route path="/courses/:id" element={<CourseDetails />} />
         <Route path="/my-batch" element={<MyBatch />} />
         <Route path="/my-batch/:batchId" element={<MyBatch />} />
+        <Route path="/my-batch/:batchId/lessons" element={<BatchLessons />} />
+        <Route path="/my-batch/:batchId/lessons/:lessonId" element={<BatchLessons />} />
         <Route path="/my-batch/:batchId/tests" element={<BatchTests />} />
       </Route>
       <Route element={<RequireAuth />}>

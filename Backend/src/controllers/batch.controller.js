@@ -1,4 +1,5 @@
 const batchService = require("../services/batch.service");
+const aiService = require("../services/ai.service");
 // ADMIN: BATCH CRUD
 const getAllBatches = async (req, res) => {
   try {
@@ -226,6 +227,43 @@ const getMyBatches = async (req, res) => {
   }
 };
 
+const askBatchQuestion = async (req, res) => {
+  const question = typeof req.body.question === "string" ? req.body.question.trim() : "";
+  const history = Array.isArray(req.body.history) ? req.body.history : [];
+
+  if (!question || question.length > 1200) {
+    return res.status(400).json({
+      success: false,
+      message: "Enter a question between 1 and 1200 characters.",
+    });
+  }
+
+  if (history.length > 10 || history.some((message) =>
+    !["user", "model"].includes(message?.role) ||
+    typeof message.content !== "string" ||
+    message.content.length > 1200
+  )) {
+    return res.status(400).json({ success: false, message: "Invalid chat history." });
+  }
+
+  try {
+    const context = await batchService.getStudentBatchQuestionContext(
+      req.params.id,
+      req.user.userId,
+    );
+    const answer = await aiService.answerBatchQuestion({ question, history, context });
+    return res.status(200).json({ success: true, data: { answer } });
+  } catch (error) {
+    const status = error.code === "AI_NOT_CONFIGURED" ? 503 : error.status || 404;
+    return res.status(status).json({
+      success: false,
+      message: error.code === "AI_NOT_CONFIGURED"
+        ? "AI assistant is not configured. Add GEMINI_API_KEY to the backend environment."
+        : error.message || "Could not get an answer right now.",
+    });
+  }
+};
+
 const getBatchmates = async (req, res) => {
   try {
     const batchmates = await batchService.getBatchmates(
@@ -346,6 +384,7 @@ module.exports = {
   addStudentToBatch,
   removeStudentFromBatch,
   getMyBatches,
+  askBatchQuestion,
   getBatchmates,
   getTrainerBatches,
   getTrainerStudents,

@@ -34,3 +34,4 @@ export async function toggleLessonProgress(lessonId) {
   const { data } = await client.patch(`/lessons/${lessonId}/progress`);
   return data;
 }
+

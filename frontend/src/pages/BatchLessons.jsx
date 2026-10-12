@@ -192,6 +192,7 @@ export default function BatchLessons() {
                 )}
               </div>
             </div>
+
           </section>
 
           <aside className="card lesson-sidebar">

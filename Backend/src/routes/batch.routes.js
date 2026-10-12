@@ -12,6 +12,7 @@ const {
   addStudentToBatch,
   removeStudentFromBatch,
   getMyBatches,
+  askBatchQuestion,
   getBatchmates,
   getTrainerBatches,
   getTrainerStudents,
@@ -27,6 +28,7 @@ const {
 } = require("../controllers/attendance.controller");
 
 const { authenticate, authorize } = require("../middleware/auth.middleware");
+const rateLimit = require("../middleware/rateLimit.middleware");
 
 const router = express.Router();
 
@@ -37,6 +39,12 @@ router.use(authenticate);
   STUDENT
 */
 router.get("/my", getMyBatches);
+router.post(
+  "/:id/assistant",
+  authorize("user"),
+  rateLimit({ windowMs: 60_000, max: 10, message: "Please wait before asking more questions." }),
+  askBatchQuestion,
+);
 router.get("/:id/batchmates", getBatchmates);
 router.get("/trainer/my", authorize("trainer"), getTrainerBatches);
 router.get("/trainer/students", authorize("trainer"), getTrainerStudents);

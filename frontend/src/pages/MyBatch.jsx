@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import AppShell from "../components/AppShell";
 import AttendanceCalendar from "../components/AttendanceCalendar";
+import BatchAssistant from "../components/BatchAssistant";
 import {
   getMyBatches,
   getBatchmates,
@@ -245,6 +246,7 @@ export default function MyBatch() {
             </button>
           </div>
         </section>
+        <BatchAssistant batchId={batchId} />
         {quickActionsOpen && (
           <nav
             className="batch-quick-actions-menu"
